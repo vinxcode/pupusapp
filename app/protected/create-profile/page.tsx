@@ -50,7 +50,7 @@ const CreateProfile = () => {
       <input
         type="submit"
         value="Crear pupuseria"
-        className="bg-green py-3 px-10 rounded-lg cursor-pointer hover:opacity-85"
+        className="bg-green py-3 px-10 rounded-lg cursor-pointer hover:opacity-85 transition duration-200 ease-in-out"
       />
     </form>
   );

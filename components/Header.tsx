@@ -1,7 +1,13 @@
 import Image from "next/image";
 import logo from '@/public/logo-pupusapp.png'
+import { createClient } from "@/utils/supabase/server";
 
-export default function Header() {
+export default async function Header() {
+
+  const supabase = createClient()
+
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <div className="flex flex-col gap-2 items-center">
 
@@ -13,9 +19,9 @@ export default function Header() {
         width={400}
         height={75} />
 
-      <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center font-leagueSpartan">
+      <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center font-leagueSpartan text-black">
         Tus pedidos de pupusas facil
       </p>
     </div>
-  );
+  )
 }
