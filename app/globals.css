@@ -23,6 +23,13 @@
   }
 }
 
+body{
+  background-image: url('/public/bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 @layer base {
   * {
     @apply border-foreground/20;

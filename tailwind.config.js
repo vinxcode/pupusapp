@@ -24,6 +24,9 @@ module.exports = {
       fontFamily: {
         'leagueSpartan': ['League Spartan', 'sans-serif'],
         'sanchez': ["Sanchez", "serif"]
+      },
+      backgroundImage: {
+        'bg-img': "url('/bg.png')",
       }
     },
   },
