@@ -18,6 +18,8 @@
     "typescript": "5.3.3"
   },
   "devDependencies": {
+    "@iconify/json": "^2.2.214",
+    "@iconify/tailwind": "^1.1.1",
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
