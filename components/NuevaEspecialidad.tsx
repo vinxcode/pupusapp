@@ -1,5 +1,6 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, } from 'react'
+
 
 type Especialidad = {
     id_especialidad: number,
@@ -12,10 +13,17 @@ type NuevaEspecialidadProps = {
 
 const NuevaEspecialidad: React.FC<NuevaEspecialidadProps> = ({ especialidades }) => {
 
-    const [selectedEspecialidad, setSelectedEspecialidad] = useState<string>('')
+    const [selectedEspecialidad, setSelectedEspecialidad] = useState<number>(0)
+
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedEspecialidad(event.target.value)
+        
+        especialidades.forEach(especialidad => {
+            if(especialidad.nombre_especialidad === event.target.value){
+                setSelectedEspecialidad(especialidad.id_especialidad)
+            }
+        })
+
     }
 
     return (
@@ -42,7 +50,7 @@ const NuevaEspecialidad: React.FC<NuevaEspecialidadProps> = ({ especialidades })
                     }
                 </select>
 
-                <p>{selectedEspecialidad}</p>
+                <p>{/* selectedEspecialidad */}</p>
 
             </div>
 
