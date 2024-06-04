@@ -1,6 +1,6 @@
 import Image from "next/image";
 import logo from '@/public/logo-pupusapp.png'
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 
 export default async function Header() {
 

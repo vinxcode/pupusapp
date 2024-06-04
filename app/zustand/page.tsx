@@ -2,8 +2,7 @@
 
 import React from 'react'
 import { useEffect } from 'react'
-import { useEspecialidadStore } from '@/store/especialidadesStore'
-import { useProfileStore } from '@/store/profilesStore'
+import { useEspecialidadStore, useProfileStore } from '@/store/'
 
 
 const Zustand = () => {
@@ -22,7 +21,7 @@ useEffect(() => {
     <div>
         {
             especialidades?.map(especialidad => (
-                <div>{ especialidad.nombre_especialidad }</div>
+                <div>{ especialidad.nombre_especialidad } </div>
             ))
         }
         <h2>PROFILE</h2>

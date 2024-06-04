@@ -14,7 +14,7 @@ type ProfileStore = {
     fetchProfiles: () => Promise<void>
 }
 
-export const useProfileStore = create<ProfileStore>((set) => ({
+const useProfileStore = create<ProfileStore>((set) => ({
     profiles: [],
     fetchProfiles: async () => {
         const { data, error } = await supabase
@@ -28,3 +28,5 @@ export const useProfileStore = create<ProfileStore>((set) => ({
         }
     }
 })) 
+
+export default useProfileStore

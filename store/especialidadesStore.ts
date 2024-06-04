@@ -13,7 +13,7 @@ type EspecialidadStore = {
     fetchEspecialidades: () => Promise<void>
 }
 
-export const useEspecialidadStore = create<EspecialidadStore>((set) => ({
+const useEspecialidadStore = create<EspecialidadStore>((set) => ({
     especialidades: [],
     fetchEspecialidades: async () => {
         const { data, error } = await supabase
@@ -27,3 +27,5 @@ export const useEspecialidadStore = create<EspecialidadStore>((set) => ({
         }
     }
 }))
+
+export default useEspecialidadStore

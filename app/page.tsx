@@ -1,16 +1,27 @@
-import DeployButton from "../components/DeployButton";
+'use client'
+
 import AuthButton from "../components/AuthButton";
-import { createClient } from "@/utils/supabase/server";
-import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
-import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
+import { createClient } from "@/utils/supabase/client";
 import Header from "@/components/Header";
 import Link from "next/link";
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-export default async function Index() {
+export default  function Index() {
 
+  const router = useRouter()
   const supabase = createClient()
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const [userSupabase, setUserSupabase] = useState<any>(null)
+
+
+  useEffect(()=> {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUserSupabase(user)
+    }
+    getUser()
+  }, [supabase])
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -23,9 +34,8 @@ export default async function Index() {
       <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
         <Header />
         {
-          user ? <Link href="/protected/create-profile" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Comenzar ahora</Link>
+          userSupabase ? <Link href="/protected/create-profile" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Comenzar ahora</Link>
             : <Link href="/login" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Comenzar ahora</Link>
-
 
         }
 

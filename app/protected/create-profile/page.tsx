@@ -13,6 +13,8 @@ const CreateProfile = () => {
   const [direccionPupuseria, setDireccionPupuseria] = useState('')
   const [emailSupabase, setEmailSupabase] = useState('')
   const [isSending, setIsSending] = useState(false)
+  const [isRegistered, setIsRegistered] = useState(false)
+  const [profiles, setProfiles] = useState<any[] | null>(null)
 
   const supabase = createClient()
 
@@ -23,10 +25,24 @@ const CreateProfile = () => {
     }
     const getUserFromSupabase = async () => {
       const { data: { user } } = await supabase.auth.getUser()
-      setEmailSupabase(user?.email || "")
+      setEmailSupabase(user?.id || "")
+    }
+    const getUsersFromProfiles = async () => {
+      const { data } = await supabase.from('profiles').select()
+      setProfiles(data)
     }
     getData()
     getUserFromSupabase()
+    getUsersFromProfiles()
+
+    profiles?.forEach(profile => {
+      if (profile.id_profile === emailSupabase) {
+        const printVar = profile.id_profile
+        console.log(printVar)
+        setIsRegistered(true)
+      }
+    })
+
   }, [supabase])
 
 
@@ -73,7 +89,7 @@ const CreateProfile = () => {
 
   };
 
-  return (
+  return isRegistered ? (
     <section className='flex flex-col items-center animate-in bg-slate-50 rounded-2xl px-14 py-7 shadow-2xl mt-20'>
 
       {
@@ -109,16 +125,30 @@ const CreateProfile = () => {
                 className="bg-green font-semibold py-3 px-10 rounded-lg cursor-pointer hover:opacity-85 transition duration-200 ease-in-out mt-2"
               />
             </form>
+
+            {
+              profiles?.map(profile => (
+                <h1>{profile.id_profile}</h1>
+              ))
+            }
+            <h1>{emailSupabase}</h1>
           </div>
         ) : (
-            <div>
-              <h2 className="font-leagueSpartan">Guardando datos... </h2>
-            </div>
-          )
+          <div>
+            <h2 className="font-leagueSpartan">Guardando datos... </h2>
+          </div>
+        )
       }
 
     </section>
-  );
+  ) : <div>
+    {
+      profiles?.map(profile => (
+        <h1>{profile.id_profile}</h1>
+      ))
+    }
+    <h1>{emailSupabase}</h1>
+  </div>
 };
 
 export default CreateProfile;

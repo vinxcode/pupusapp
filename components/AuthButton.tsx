@@ -1,31 +1,39 @@
-import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+'use client'
 
-export default async function AuthButton() {
+import { createClient } from "@/utils/supabase/client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+export default function AuthButton() {
+
+  const router = useRouter()
   const supabase = createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const [userSupabase, setUserSupabase] = useState<any>(null)
+
+useEffect(()=> {
+  const getUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setUserSupabase(user)
+  }
+  getUser()
+}, [supabase])
 
 
   const signOut = async () => {
-    "use server";
-
-    const supabase = createClient();
     await supabase.auth.signOut();
-    return redirect("/login");
+    router.push("/login");
   };
 
-  return user ? (
+  return userSupabase ? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <form action={signOut}>
-        <button className="py-2 px-4 rounded-md no-underline border-black border-2">
+      Hey, {userSupabase.email}!
+      
+        <button className="py-2 px-4 rounded-md no-underline border-black border-2"
+        onClick={signOut}>
           Logout
         </button>
-      </form>
     </div>
   ) : (
     <Link
