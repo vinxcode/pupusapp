@@ -1,12 +1,20 @@
+'use client'
+
 import Image from "next/image";
 import logo from '@/public/logo-pupusapp.png'
 import { createClient } from "@/utils/supabase/client";
+import { useEffect } from "react";
 
-export default async function Header() {
+export default function Header() {
 
   const supabase = createClient()
 
-  const { data: { user } } = await supabase.auth.getUser();
+  useEffect(()=> {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+    }
+    getUser()
+  }, [supabase])
 
   return (
     <div className="flex flex-col gap-2 items-center">
