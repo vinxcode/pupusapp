@@ -15,6 +15,8 @@ export default function Index() {
 
   const [userSupabase, setUserSupabase] = useState<any>(null)
   const [profiles, setProfiles] = useState<any[] | null>(null)
+  const [userIsLoading, setUserIsLoading] = useState(false)
+  const [profilesIsLoading, setProfilesIsLoading] = useState(false)
   const currentUser = useCurrentUserStore((state) => state.idUser)
   const setCurrentUser = useCurrentUserStore((state) => state.updateIdUser)
   const fetchEspecialidades = useEspecialidadStore((state) => state.fetchEspecialidades)
@@ -24,7 +26,6 @@ export default function Index() {
   const updateHasEspecialidades = useCurrentUserStore((state) => state.updateHasEspecialidades)
   const hasNameAndAddress = useCurrentUserStore((state) => state.hasNameAndAddress)
   const hasEspecialidades = useCurrentUserStore((state) => state.hasEspecialidades)
-
 
   useEffect(() => {
 
@@ -39,6 +40,7 @@ export default function Index() {
         router.push("/login");
       } else {
         setUserSupabase(user)
+        setUserIsLoading(true)
       }
 
     }
@@ -47,6 +49,7 @@ export default function Index() {
       const { data } = await supabase.from('profiles').select()
       if (data) {
         setProfiles(data)
+        setProfilesIsLoading(true)
       } else {
         console.log('Error catching profiles from supabase')
       }
@@ -55,28 +58,30 @@ export default function Index() {
     getUser()
     getProfiles()
 
-      // VERIFY IF USER HAS PROFILE
-  profiles?.forEach(profile => {
-    if (profile.id_profile === userSupabase.id) {
-      setCurrentUser(userSupabase.id)
-      updateHasNameAndAddress(true)
-
-      // VERIFY IF USER HAS ESPECIALIDADES
-      especialidadesP?.forEach(especialidad => {
-        if (especialidad.id_pupuseria === profile.id_integer) {
-          updateHasEspecialidades(true)
-        }
-      })
-    } else {
-      return
-    }
-  })
   }, [supabase])
 
+  if (userIsLoading && profilesIsLoading) {
+    // VERIFY IF USER HAS PROFILE
+
+    profiles?.forEach(profile => {
+      if (profile.id_profile === userSupabase.id) {
+        setCurrentUser(userSupabase.id)
+        updateHasNameAndAddress(true)
+
+        // VERIFY IF USER HAS ESPECIALIDADES
+        especialidadesP?.forEach(especialidad => {
+          if (especialidad.id_pupuseria === profile.id_integer) {
+            updateHasEspecialidades(true)
+          }
+        })
+      } else {
+        return
+      }
+    })
+  }
 
 
-
-  return (
+  return (userIsLoading && profilesIsLoading) && (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <nav className="w-full flex justify-center  h-16 bg-yellow">
         <div className="w-full max-w-4xl flex justify-end items-center p-3 text-sm">
@@ -90,13 +95,13 @@ export default function Index() {
           userSupabase ?
             hasNameAndAddress ?
               hasEspecialidades ?
-              <Link href="/protected/pedidos" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] 
+                <Link href="/protected/pedidos" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] 
               font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Ir a pedidos</Link>
-              :
-              <Link href="/protected/escoger-especialidades" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] 
-                font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Escoger especialidades</Link>
                 :
-                <Link href="/protected/create-profile" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] 
+                <Link href="/protected/escoger-especialidades" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] 
+                font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Escoger especialidades</Link>
+              :
+              <Link href="/protected/create-profile" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] 
                 font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Configurar perfil</Link>
             :
             <Link href="/login" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] font-leagueSpartan 
