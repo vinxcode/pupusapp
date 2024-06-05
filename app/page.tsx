@@ -6,22 +6,75 @@ import Header from "@/components/Header";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useCurrentUserStore, useEspecialidadStore } from "@/store";
 
-export default  function Index() {
+export default function Index() {
 
   const router = useRouter()
   const supabase = createClient()
 
   const [userSupabase, setUserSupabase] = useState<any>(null)
+  const [profiles, setProfiles] = useState<any[] | null>(null)
+  const currentUser = useCurrentUserStore((state) => state.idUser)
+  const setCurrentUser = useCurrentUserStore((state) => state.updateIdUser)
+  const fetchEspecialidades = useEspecialidadStore((state) => state.fetchEspecialidades)
+  const fetchEspecialidadesPupuseria = useEspecialidadStore((state) => state.fetchEspecialidadesPupuseria)
+  const especialidadesP = useEspecialidadStore((state) => state.especialidadesPupuseria)
+  const updateHasNameAndAddress = useCurrentUserStore((state) => state.updateHasNameAndAddress)
+  const updateHasEspecialidades = useCurrentUserStore((state) => state.updateHasEspecialidades)
+  const hasNameAndAddress = useCurrentUserStore((state) => state.hasNameAndAddress)
+  const hasEspecialidades = useCurrentUserStore((state) => state.hasEspecialidades)
 
 
-  useEffect(()=> {
+  useEffect(() => {
+
+    fetchEspecialidades()
+    fetchEspecialidadesPupuseria()
+
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      setUserSupabase(user)
+
+      if (!user?.id) {
+        alert(userSupabase.id)
+        router.push("/login");
+      } else {
+        setUserSupabase(user)
+      }
+
     }
+
+    const getProfiles = async () => {
+      const { data } = await supabase.from('profiles').select()
+      if (data) {
+        setProfiles(data)
+      } else {
+        console.log('Error catching profiles from supabase')
+      }
+    }
+
     getUser()
+    getProfiles()
+
+      // VERIFY IF USER HAS PROFILE
+  profiles?.forEach(profile => {
+    if (profile.id_profile === userSupabase.id) {
+      setCurrentUser(userSupabase.id)
+      updateHasNameAndAddress(true)
+
+      // VERIFY IF USER HAS ESPECIALIDADES
+      especialidadesP?.forEach(especialidad => {
+        if (especialidad.id_pupuseria === profile.id_integer) {
+          updateHasEspecialidades(true)
+        }
+      })
+    } else {
+      return
+    }
+  })
   }, [supabase])
+
+
+
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -34,10 +87,26 @@ export default  function Index() {
       <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
         <Header />
         {
-          userSupabase ? <Link href="/protected/create-profile" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Comenzar ahora</Link>
-            : <Link href="/login" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Comenzar ahora</Link>
-
+          userSupabase ?
+            hasNameAndAddress ?
+              hasEspecialidades ?
+              <Link href="/protected/pedidos" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] 
+              font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Ir a pedidos</Link>
+              :
+              <Link href="/protected/escoger-especialidades" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] 
+                font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Escoger especialidades</Link>
+                :
+                <Link href="/protected/create-profile" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] 
+                font-leagueSpartan font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Configurar perfil</Link>
+            :
+            <Link href="/login" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] font-leagueSpartan 
+            font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Comenzar ahora</Link>
         }
+
+        {
+          <p>{currentUser}</p>
+        }
+
 
       </div>
 

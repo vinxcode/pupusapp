@@ -1,17 +1,25 @@
 import { create } from 'zustand'
 
 type CurrentUserStore = {
-    idUser: string
+    idUser: string,
+    hasNameAndAddress: boolean,
+    hasEspecialidades: boolean
 }
 
 type Action = {
-    updateIdUser: (id_user: CurrentUserStore['idUser']) => void
-  }
-  
+    updateIdUser: (idUser: CurrentUserStore['idUser']) => void,
+    updateHasNameAndAddress: (hasNameAndAddress: CurrentUserStore['hasNameAndAddress']) => void,
+    updateHasEspecialidades: (hasEspecialidades: CurrentUserStore['hasEspecialidades']) => void,
+}
+
 
 const useCurrentUserStore = create<CurrentUserStore & Action>((set) => ({
     idUser: "",
-    updateIdUser: (idUser) => set(() => ({ idUser: idUser }))
+    hasNameAndAddress: false,
+    hasEspecialidades: false,
+    updateIdUser: (idUser) => set(() => ({ idUser: idUser })),
+    updateHasEspecialidades: (hasEspecialidades) => ({ hasEspecialidades: hasEspecialidades }),
+    updateHasNameAndAddress: (hasNameAndAddress) => ({ hasNameAndAddress: hasNameAndAddress })
 }))
 
 export default useCurrentUserStore

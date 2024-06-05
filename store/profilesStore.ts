@@ -7,6 +7,7 @@ type Profile = {
     id_profile: string,
     nombre_pupuseria: string,
     direccion_pupuseria: string
+    id_integer: number
 }
 
 type ProfileStore = {
