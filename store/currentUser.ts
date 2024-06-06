@@ -18,8 +18,8 @@ const useCurrentUserStore = create<CurrentUserStore & Action>((set) => ({
     hasNameAndAddress: false,
     hasEspecialidades: false,
     updateIdUser: (idUser) => set(() => ({ idUser: idUser })),
-    updateHasEspecialidades: (hasEspecialidades) => ({ hasEspecialidades: hasEspecialidades }),
-    updateHasNameAndAddress: (hasNameAndAddress) => ({ hasNameAndAddress: hasNameAndAddress })
+    updateHasEspecialidades: (hasEspecialidades) => set(() => ({ hasEspecialidades: hasEspecialidades })),
+    updateHasNameAndAddress: (hasNameAndAddress) => set(() => ({ hasNameAndAddress: hasNameAndAddress }))
 }))
 
 export default useCurrentUserStore

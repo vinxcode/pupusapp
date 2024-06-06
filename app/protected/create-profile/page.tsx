@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useCurrentUserStore } from "@/store";
 
 const CreateProfile = () => {
 
@@ -13,10 +14,25 @@ const CreateProfile = () => {
   const [direccionPupuseria, setDireccionPupuseria] = useState('')
   const [emailSupabase, setEmailSupabase] = useState('')
   const [isSending, setIsSending] = useState(false)
+  const updateHasNameAndAddress = useCurrentUserStore((state) => state.updateHasNameAndAddress)
+  const updateHasEspecialidades = useCurrentUserStore((state) => state.updateHasEspecialidades)
+  const hasNameAndAddress = useCurrentUserStore((state) => state.hasNameAndAddress)
+  const hasEspecialidades = useCurrentUserStore((state) => state.hasEspecialidades)
 
   const supabase = createClient()
 
   useEffect(() => {
+
+    if(hasNameAndAddress){
+      if(hasEspecialidades){
+        router.push('./pedidos')
+      } else {
+        router.push('./escoger-especialidades')
+      }
+    } else {
+      alert('Ni una ni otra prrito')
+    }
+
     const getData = async () => {
       const { data } = await supabase.from('pupuserias').select()
       setPupuserias(data)
