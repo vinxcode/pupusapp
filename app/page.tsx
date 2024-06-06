@@ -107,12 +107,6 @@ export default function Index() {
             <Link href="/login" className="bg-red text-white text-center px-10 py-3 rounded-lg mt-[-70px] font-leagueSpartan 
             font-semibold text-xl hover:opacity-85 transition duration-200 ease-in-out">Comenzar ahora</Link>
         }
-
-        {
-          <p>{currentUser}</p>
-        }
-
-
       </div>
 
       <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
