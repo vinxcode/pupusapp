@@ -16,12 +16,16 @@ type EspecialidadPupuseria = {
 type EspecialidadStore = {
     especialidades: Especialidad[],
     especialidadesPupuseria: EspecialidadPupuseria[],
+    updatedEspecialidades: Especialidad[],
     fetchEspecialidades: () => Promise<void>
     fetchEspecialidadesPupuseria: () => Promise<void>
+    updateEspecialidades: (updatedEspecialidades: EspecialidadStore['updatedEspecialidades']) => void
 }
 
 const useEspecialidadStore = create<EspecialidadStore>((set) => ({
     especialidades: [],
+    especialidadesPupuseria: [],
+    updatedEspecialidades: [],
     fetchEspecialidades: async () => {
         const { data, error } = await supabase
             .from<Especialidad>('especialidades')
@@ -33,7 +37,7 @@ const useEspecialidadStore = create<EspecialidadStore>((set) => ({
             set({ especialidades: data });
         }
     },
-    especialidadesPupuseria: [],
+    
     fetchEspecialidadesPupuseria: async () => {
         const { data, error } = await supabase
             .from<EspecialidadPupuseria>('pupuserias_especialidades')
@@ -44,7 +48,8 @@ const useEspecialidadStore = create<EspecialidadStore>((set) => ({
         } else {
             set({ especialidadesPupuseria: data });
         }
-    }
+    },
+    updateEspecialidades: (updatedEspecialidades) => set(() => ({ updatedEspecialidades: updatedEspecialidades })),
 }))
 
 export default useEspecialidadStore

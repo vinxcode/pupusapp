@@ -22,7 +22,7 @@ const EscogerEspecialidad = () => {
     const nuevosNumeros = [...numeroEspecialidades]
     nuevosNumeros[nuevosNumeros.length] = { value: "" }
     setNumeroEspecialidades(nuevosNumeros)
-    console.log(numeroEspecialidades)
+    // console.log(numeroEspecialidades)
   }
 
   return (
