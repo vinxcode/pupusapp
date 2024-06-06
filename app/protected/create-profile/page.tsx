@@ -29,9 +29,7 @@ const CreateProfile = () => {
       } else {
         router.push('./escoger-especialidades')
       }
-    } else {
-      alert('Ni una ni otra prrito')
-    }
+    } 
 
     const getData = async () => {
       const { data } = await supabase.from('pupuserias').select()

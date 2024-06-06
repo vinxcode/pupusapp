@@ -3,21 +3,19 @@
 import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from 'react'
 import NuevaEspecialidad from "@/components/NuevaEspecialidad";
+import { useEspecialidadStore } from "@/store";
 
 const EscogerEspecialidad = () => {
 
   const supabase = createClient()
 
-  const [especialidades, setEspecialidades] = useState<any[] | null>(null)
+  // const [especialidades, setEspecialidades] = useState<any[] | null>(null)
   const [numeroEspecialidades, setNumeroEspecialidades] = useState([{value: ""}])
+  const especialidades = useEspecialidadStore((state) => state.especialidades)
+  const fetchEspecialidades = useEspecialidadStore((state) => state.fetchEspecialidades)
 
   useEffect(() => {
-    const getData = async () => {
-      const { data } = await supabase.from('especialidades').select()
-      setEspecialidades(data)
-    }
-
-    getData()
+    fetchEspecialidades()
   }, [supabase])
 
   const handleAddEspecialidad = (e: any) => {
