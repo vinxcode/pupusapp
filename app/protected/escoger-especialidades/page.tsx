@@ -9,8 +9,7 @@ const EscogerEspecialidad = () => {
 
   const supabase = createClient()
 
-  // const [especialidades, setEspecialidades] = useState<any[] | null>(null)
-  const [numeroEspecialidades, setNumeroEspecialidades] = useState([{value: ""}])
+  const [numeroEspecialidades, setNumeroEspecialidades] = useState([{ value: "" }])
   const especialidades = useEspecialidadStore((state) => state.especialidades)
   const fetchEspecialidades = useEspecialidadStore((state) => state.fetchEspecialidades)
 
@@ -21,11 +20,10 @@ const EscogerEspecialidad = () => {
   const handleAddEspecialidad = (e: any) => {
     e.preventDefault()
     const nuevosNumeros = [...numeroEspecialidades]
-    nuevosNumeros[nuevosNumeros.length] = {value: ""}
+    nuevosNumeros[nuevosNumeros.length] = { value: "" }
     setNumeroEspecialidades(nuevosNumeros)
     console.log(numeroEspecialidades)
   }
-
 
   return (
     <section className="flex flex-col items-center animate-in bg-slate-50 rounded-2xl px-14 py-7 shadow-2xl mt-20">
@@ -52,9 +50,7 @@ const EscogerEspecialidad = () => {
           <span className="icon-[material-symbols--add] text-xl mb-[4px]"></span>
           Agregar nueva especialidad</button>
 
-        <input
-          type="submit"
-          value="Finalizar"
+        <input type="submit" value="Finalizar"
           className="bg-green font-semibold py-3 px-10 rounded-lg cursor-pointer hover:opacity-85 transition duration-200 ease-in-out"
         />
       </form>
