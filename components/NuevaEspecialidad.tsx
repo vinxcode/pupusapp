@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, } from 'react'
+import { useEspecialidadStore } from '@/store'
 
 type Especialidad = {
     id_especialidad: number,
@@ -12,12 +13,17 @@ type NuevaEspecialidadProps = {
 const NuevaEspecialidad: React.FC<NuevaEspecialidadProps> = ({ especialidades }) => {
 
     const [selectedEspecialidad, setSelectedEspecialidad] = useState<string>("")
+    const updatedEspecialidades = useEspecialidadStore((state) => state.updatedEspecialidades)
+    const updateEspecialidades = useEspecialidadStore((state) => state.updateEspecialidades)
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         
         especialidades.forEach(especialidad => {
             if(especialidad.nombre_especialidad === event.target.value){
                 setSelectedEspecialidad(especialidad.nombre_especialidad)
+                const newEspecialidades = updatedEspecialidades.filter(e => e.nombre_especialidad !== especialidad.nombre_especialidad)
+                updateEspecialidades(newEspecialidades)
+                console.log(updatedEspecialidades)
             }
         })
     }
@@ -36,8 +42,8 @@ const NuevaEspecialidad: React.FC<NuevaEspecialidadProps> = ({ especialidades })
                 >
                     <option value="">Seleccione una especialidad</option>
                     {
-                        especialidades && (
-                            especialidades?.map((especialidad, index) => (
+                        updatedEspecialidades && (
+                            updatedEspecialidades?.map((especialidad, index) => (
                                 <option key={index} className="h-9 px-3 py-1 hover:bg-green"
                                     value={especialidad?.nombre_especialidad}>{especialidad?.nombre_especialidad}</option>
                             ))

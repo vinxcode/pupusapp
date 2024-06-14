@@ -35,6 +35,7 @@ const useEspecialidadStore = create<EspecialidadStore>((set) => ({
             console.error("Error fetching data: ", error);
         } else {
             set({ especialidades: data });
+            set({ updatedEspecialidades: data });
         }
     },
     

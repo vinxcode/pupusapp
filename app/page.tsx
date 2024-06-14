@@ -36,7 +36,7 @@ export default function Index() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user?.id) {
-        alert(userSupabase.id)
+        
         router.push("/login");
       } else {
         setUserSupabase(user)
