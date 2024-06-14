@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useCurrentUserStore } from "@/store";
+import { useCurrentUserStore, useProfileStore } from "@/store";
 
 const CreateProfile = () => {
 
@@ -12,37 +12,47 @@ const CreateProfile = () => {
   const [pupuserias, setPupuserias] = useState<any[] | null>(null)
   const [nombrePupuseria, setNombrePupuseria] = useState('');
   const [direccionPupuseria, setDireccionPupuseria] = useState('')
-  const [emailSupabase, setEmailSupabase] = useState('')
   const [isSending, setIsSending] = useState(false)
   const updateHasNameAndAddress = useCurrentUserStore((state) => state.updateHasNameAndAddress)
   const updateHasEspecialidades = useCurrentUserStore((state) => state.updateHasEspecialidades)
   const hasNameAndAddress = useCurrentUserStore((state) => state.hasNameAndAddress)
   const hasEspecialidades = useCurrentUserStore((state) => state.hasEspecialidades)
+  const currentUser = useCurrentUserStore((state) => state.idUser)
+  const updateCurrentUser = useCurrentUserStore((state) => state.updateIdUser)
+  const fetchProfiles = useProfileStore((state) => state.fetchProfiles)
 
   const supabase = createClient()
 
   useEffect(() => {
 
-    if(hasNameAndAddress){
-      if(hasEspecialidades){
+    if (hasNameAndAddress) {
+      if (hasEspecialidades) {
         router.push('./pedidos')
       } else {
         router.push('./escoger-especialidades')
       }
-    } 
+    }
 
     const getData = async () => {
-      const { data } = await supabase.from('pupuserias').select()
+      const { data } = await supabase.from('profiles').select()
       setPupuserias(data)
     }
-    const getUserFromSupabase = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setEmailSupabase(user?.id || "")
-    }
-    getData()
-    getUserFromSupabase()
 
+    getData()
   }, [supabase])
+
+  useEffect(() => {
+
+    const verifyUser = async () => {
+      
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!currentUser) {
+        updateCurrentUser(user?.id || "")
+      }
+    }
+    verifyUser()
+
+  }, [pupuserias])
 
 
   const handleSubmit = async (e: any) => {
@@ -55,8 +65,6 @@ const CreateProfile = () => {
       return;
     }
 
-    const calculatedID = (pupuserias.length > 0 ? pupuserias[pupuserias.length - 1].id_pupuseria : 0) + 1;
-
     try {
       const response = await fetch('/api/createProfile', {
         method: 'POST',
@@ -64,8 +72,7 @@ const CreateProfile = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          id_pupuseria: calculatedID,
-          email_pupuseria: emailSupabase,
+          id_profile: currentUser,
           nombre_pupuseria: nombrePupuseria,
           direccion_pupuseria: direccionPupuseria
         })
@@ -84,8 +91,6 @@ const CreateProfile = () => {
     router.push('./escoger-especialidades');
     setNombrePupuseria('')
     setDireccionPupuseria('')
-
-
   };
 
   return !isSending ? (
@@ -124,15 +129,11 @@ const CreateProfile = () => {
         </form>
 
       </div></section>
-      ) : (
-      <div>
-        <h2 className="font-leagueSpartan">Guardando datos... </h2>
-      </div>
-      )
-
-
-    
-  
+  ) : (
+    <div>
+      <h2 className="font-leagueSpartan">Guardando datos... </h2>
+    </div>
+  )
 };
 
 export default CreateProfile;
