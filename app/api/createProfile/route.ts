@@ -10,7 +10,7 @@ export async function POST(request: any) {
 
     try {
         const { data, error } = await supabase
-            .from('pupuserias')
+            .from('profiles')
             .insert([{ id_profile, nombre_pupuseria, direccion_pupuseria }]);
 
         if (error) {

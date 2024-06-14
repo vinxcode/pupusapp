@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useCurrentUserStore, useProfileStore } from "@/store";
+import { transpileModule } from "typescript";
 
 const CreateProfile = () => {
 
@@ -19,7 +20,6 @@ const CreateProfile = () => {
   const hasEspecialidades = useCurrentUserStore((state) => state.hasEspecialidades)
   const currentUser = useCurrentUserStore((state) => state.idUser)
   const updateCurrentUser = useCurrentUserStore((state) => state.updateIdUser)
-  const fetchProfiles = useProfileStore((state) => state.fetchProfiles)
 
   const supabase = createClient()
 
@@ -36,10 +36,13 @@ const CreateProfile = () => {
     const getData = async () => {
       const { data } = await supabase.from('profiles').select()
       setPupuserias(data)
+      // Profiles are being stored in pupuserias
     }
 
     getData()
   }, [supabase])
+
+
 
   useEffect(() => {
 
@@ -62,6 +65,7 @@ const CreateProfile = () => {
 
     if (!pupuserias) {
       console.error('Pupuserias data is not loaded yet');
+      console.log(pupuserias)
       return;
     }
 
@@ -88,6 +92,7 @@ const CreateProfile = () => {
       console.error('Error al insertar los datos:', error);
     }
 
+    updateHasNameAndAddress(true)
     router.push('./escoger-especialidades');
     setNombrePupuseria('')
     setDireccionPupuseria('')
