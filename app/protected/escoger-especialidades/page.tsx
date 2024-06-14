@@ -9,6 +9,8 @@ const EscogerEspecialidad = () => {
 
   const supabase = createClient()
 
+  const [allowAdd, setAllowAdd] = useState(false)
+  const [allowErrorMessage, setAllowErrorMessage] = useState(false)
   const [numeroEspecialidades, setNumeroEspecialidades] = useState([{ value: "" }])
   const especialidades = useEspecialidadStore((state) => state.especialidades)
   const fetchEspecialidades = useEspecialidadStore((state) => state.fetchEspecialidades)
@@ -19,9 +21,14 @@ const EscogerEspecialidad = () => {
 
   const handleAddEspecialidad = (e: any) => {
     e.preventDefault()
-    const nuevosNumeros = [...numeroEspecialidades]
-    nuevosNumeros[nuevosNumeros.length] = { value: "" }
-    setNumeroEspecialidades(nuevosNumeros)
+    if (allowAdd) {
+      const nuevosNumeros = [...numeroEspecialidades]
+      nuevosNumeros[nuevosNumeros.length] = { value: "" }
+      setNumeroEspecialidades(nuevosNumeros)
+      setAllowAdd(false)
+    } else{
+      setAllowErrorMessage(true)
+    }
     // console.log(numeroEspecialidades)
   }
 
@@ -30,6 +37,14 @@ const EscogerEspecialidad = () => {
       <h1 className='font-leagueSpartan text-3xl font-bold mt-10'>Escoge las especialidades que ofreces</h1>
       <div className='bg-green h-2 rounded-full w-4/5 '></div>
 
+      {
+        allowErrorMessage && 
+        (
+          <div className="bg-red mt-3 w-4/5 px-10 py-2 text-white rounded-full animate-in">Debes escoger las especialidades anteriores antes de agregar una mas</div>
+        ) 
+        
+      }
+
       <form className="flex flex-col font-leagueSpartan p-10 text-black gap-4  w-[500px]" >
 
         {
@@ -37,7 +52,7 @@ const EscogerEspecialidad = () => {
             <div>
               {
                 numeroEspecialidades.map(especialidad => (
-                  <NuevaEspecialidad especialidades={especialidades} />
+                  <NuevaEspecialidad especialidades={especialidades} allowAdd={allowAdd} setAllowAdd={setAllowAdd} />
                 ))
               }
             </div>

@@ -6,30 +6,35 @@ type Especialidad = {
     id_especialidad: number,
     nombre_especialidad: string
 }
+
 type NuevaEspecialidadProps = {
     especialidades: Especialidad[]
 }
 
-const NuevaEspecialidad: React.FC<NuevaEspecialidadProps> = ({ especialidades }) => {
+const NuevaEspecialidad: React.FC<NuevaEspecialidadProps & any> = ({ especialidades, allowAdd, setAllowAdd }) => {
 
     const [selectedEspecialidad, setSelectedEspecialidad] = useState<string>("")
     const updatedEspecialidades = useEspecialidadStore((state) => state.updatedEspecialidades)
     const updateEspecialidades = useEspecialidadStore((state) => state.updateEspecialidades)
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        
-        especialidades.forEach(especialidad => {
+
+        setSelectedEspecialidad(event.target.value)
+
+
+        /* especialidades.forEach(especialidad => {
             if(especialidad.nombre_especialidad === event.target.value){
                 setSelectedEspecialidad(especialidad.nombre_especialidad)
                 const newEspecialidades = updatedEspecialidades.filter(e => e.nombre_especialidad !== especialidad.nombre_especialidad)
                 updateEspecialidades(newEspecialidades)
                 console.log(updatedEspecialidades)
             }
-        })
+        }) */
     }
 
     return (
         <div className="flex gap-4 justify-center mb-3 animate-in">
+
 
             { /* SELECT WITH ITS LABEL */}
             <div className="flex flex-col w-full">
