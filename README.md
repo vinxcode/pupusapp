@@ -1,6 +1,6 @@
 # Pupusapp
 
-https://raw.githubusercontent.com/vinxcode/pupusapp/main/public/logo-pupusapp.png
+<span>https://raw.githubusercontent.com/vinxcode/pupusapp/main/public/logo-pupusapp.png</span>
 
 Una aplicación para hacer pedidos de pupusas en las pupuserías, en el lugar o desde casa.
 
