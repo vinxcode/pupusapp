@@ -1,6 +1,6 @@
 # Pupusapp
 
-<img href="./public/logo-pupusapp.png" alt="pupusapp logo"/>
+<img href="/public/logo-pupusapp.png" alt="pupusapp logo"/>
 <img href="https://raw.githubusercontent.com/vinxcode/pupusapp/main/public/logo-pupusapp.png" alt="pupusapp logo"/>
 
 
