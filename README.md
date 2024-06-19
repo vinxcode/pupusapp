@@ -2,6 +2,8 @@
 
 <span>https://raw.githubusercontent.com/vinxcode/pupusapp/main/public/logo-pupusapp.png</span>
 
+<img href="./public/logo-pupusapp.png"/>
+
 Una aplicación para hacer pedidos de pupusas en las pupuserías, en el lugar o desde casa.
 
 ### ¿Qué es una pupusería?
