@@ -1,10 +1,5 @@
 # Pupusapp
-
-<img href="/public/logo-pupusapp.png" alt="pupusapp logo"/>
-<img href="https://raw.githubusercontent.com/vinxcode/pupusapp/main/public/logo-pupusapp.png" alt="pupusapp logo"/>
-
-
-Una aplicación para hacer pedidos de pupusas en las pupuserías, en el lugar o desde casa.
+App para hacer pedidos de pupusas, un platillo tipico de El Salvador.
 
 ### ¿Qué es una pupusería?
 Son establecimientos donde se venden las famosas pupusas, el platillo típico por excelencia de El Salvador. 
